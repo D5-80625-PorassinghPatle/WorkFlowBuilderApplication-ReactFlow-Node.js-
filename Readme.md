@@ -12,7 +12,7 @@
 - [How to Run the Project](#how-to-run-the-project)
 
 ## Demo Video
-*Add the link to the demo video here.*
+[*Add the link to the demo video here.*](https://www.youtube.com/watch?v=NQEadYxT7L4)
 
 ## Images
 *Add images of the project here.*
