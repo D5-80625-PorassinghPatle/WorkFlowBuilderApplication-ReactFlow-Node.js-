@@ -1,3 +1,8 @@
+import React from 'react';
+import { Handle } from 'reactflow';
+import { useState } from 'react';
+import './node.css';
+
 const FilterDataNode = ({ data, isConnectable }) => {
   const [column, setColumn] = useState(data.column || '');
 

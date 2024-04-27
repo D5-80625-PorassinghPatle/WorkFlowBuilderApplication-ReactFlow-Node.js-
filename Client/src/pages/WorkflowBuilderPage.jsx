@@ -14,12 +14,14 @@ const WorkflowBuilderPage = () => {
 
   const handleElementsChange = (newElements, newEdges) => {
     setElements(newElements);
+
+    // Update the order of execution based on the elements in sequence
     const order = newElements
+        // Filter out initial nodes (e.g., "Start Node" and "End Node")
         .filter((element) => element.type !== 'input' && element.type !== 'output')
-        .map((element) => ({
-            type: element.type,
-            data: element.data, // Include node data (e.g., column name) in the order of execution
-        }));
+        // Map to the types of the nodes
+        .map((element) => element.type);
+
     setOrderOfExecution(order);
 };
 
@@ -189,5 +191,4 @@ const styles = `
 const styleElement = document.createElement("style");
 styleElement.textContent = styles;
 document.head.appendChild(styleElement);
-
 export default WorkflowBuilderPage;
