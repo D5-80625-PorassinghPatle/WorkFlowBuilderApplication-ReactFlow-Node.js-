@@ -1,0 +1,9 @@
+/* Define a common CSS class for all nodes */
+.node-style {
+    background-color: #e6f7ff; /* Light blue background */
+    border-radius: 5px;
+    padding: 8px;
+    border: 1px solid #91d5ff; /* Light blue border */
+    font-size: 14px;
+    color: #0050b3; /* Dark blue text color */
+}
