@@ -4,7 +4,7 @@ export default function (app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://localhost:3003', // replace with your backend URL
+      target: 'http://localhost:3003',
       changeOrigin: true,
     })
   );

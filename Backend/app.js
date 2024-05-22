@@ -3,7 +3,6 @@ import morgan from "morgan";
 import cors from "cors"; 
 import helmet from "helmet"; 
 import workflowRoutes from "./routes/workflowRoutes.js"; 
-import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const app = express();
 app.use(cors()); // Enable CORS

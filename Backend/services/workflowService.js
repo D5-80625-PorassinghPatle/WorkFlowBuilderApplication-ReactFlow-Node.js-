@@ -148,7 +148,7 @@ const sendPostRequest = async (data) => {
 // Function to execute a workflow by name
 const executeWorkflowService = async (name, inputData) => {
     console.log('Executing workflow with name:', name);
-    console.log(inputData);
+    //console.log(inputData);
 
     // Retrieve the workflow by its name
     const workflow = await Workflow.findOne({ name });

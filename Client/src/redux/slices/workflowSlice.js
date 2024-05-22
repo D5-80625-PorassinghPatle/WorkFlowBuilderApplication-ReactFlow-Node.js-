@@ -25,16 +25,40 @@ const workflowSlice = createSlice({
             // Add a new workflow to the array
             state.workflows.push(action.payload);
         },
+        updateWorkflow: (state, action) => {
+            // Update an existing workflow in the array
+            const index = state.workflows.findIndex(
+                (workflow) => workflow.id === action.payload.id
+            );
+            if (index !== -1) {
+                state.workflows[index] = action.payload;
+            }
+        },
        
         selectWorkflow: (state, action) => {
             // Set the selected workflow name
             state.selectedWorkflowName = action.payload;
         },
     },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchWorkflows.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchWorkflows.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.workflows = action.payload; // Store fetched workflows
+            })
+            .addCase(fetchWorkflows.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message; // Store error message
+            });
+    },
 });
 
 export const {
     addWorkflow,
+    updateWorkflow,
     selectWorkflow,
 } = workflowSlice.actions;
 

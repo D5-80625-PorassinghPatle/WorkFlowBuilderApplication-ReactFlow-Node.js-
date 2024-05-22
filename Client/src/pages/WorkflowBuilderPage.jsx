@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addWorkflow } from "../redux/slices/workflowSlice";
+
 import WorkflowCanvas from "../components/WorkflowBuilder/WorkflowCanvas";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
@@ -31,7 +30,8 @@ const WorkflowBuilderPage = () => {
       // Define the workflow data to be saved
       const workflowData = {
         name: workflowName,
-        orderOfExecution, // Use order of execution state variable
+        orderOfExecution,
+         // Use order of execution state variable
       };
 
       // Send a POST request to save the workflow data to the backend
