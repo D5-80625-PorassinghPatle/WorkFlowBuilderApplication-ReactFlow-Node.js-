@@ -1,8 +1,8 @@
 import express from "express";
-import morgan from "morgan"; // Logging middleware
-import cors from "cors"; // CORS middleware
-import helmet from "helmet"; // Security middleware
-import workflowRoutes from "./routes/workflowRoutes.js"; // Import workflow routes
+import morgan from "morgan"; 
+import cors from "cors"; 
+import helmet from "helmet"; 
+import workflowRoutes from "./routes/workflowRoutes.js"; 
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const app = express();
@@ -10,7 +10,7 @@ app.use(cors()); // Enable CORS
 
 // Middleware configuration
 app.use(express.json()); // Parse JSON request bodies
-app.use(helmet()); // Set security-related HTTP headers
+app.use(helmet()); // Set security-related HTTP headers(not yet used just solving croc error )
 app.use(morgan("dev")); // Log HTTP requests in development mode
 
 // Register workflow routes

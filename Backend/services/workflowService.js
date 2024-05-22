@@ -191,14 +191,12 @@ const executeWorkflowService = async (name, inputData) => {
         }
     }
 
-    // Return the execution results
     return executionResults;
 };
 
 
 
 
-// Export service functions
 export default {
     createWorkflowService,
     getWorkflowsService,

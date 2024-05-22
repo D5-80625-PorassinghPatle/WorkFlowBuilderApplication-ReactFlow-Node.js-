@@ -68,45 +68,6 @@ const getWorkflowByName = async (req, res) => {
     }
 };
 
-// Function to handle updating a workflow by ID
-const updateWorkflow = async (req, res) => {
-    try {
-        const { workflowId } = req.params;
-        const { name, orderOfExecution } = req.body;
-
-        // Call the service function to update the workflow
-        const updatedWorkflow = await workflowService.updateWorkflowService(workflowId, name, orderOfExecution);
-
-        if (updatedWorkflow) {
-            res.status(200).json(updatedWorkflow);
-        } else {
-            res.status(404).json({ error: 'Workflow not found' });
-        }
-    } catch (error) {
-        console.error('Error updating workflow:', error);
-        res.status(500).json({ error: 'Failed to update workflow' });
-    }
-};
-
-// Function to handle deleting a workflow by ID
-const deleteWorkflow = async (req, res) => {
-    try {
-        const { workflowId } = req.params;
-
-        // Call the service function to delete the workflow
-        const deletedWorkflow = await workflowService.deleteWorkflowService(workflowId);
-
-        if (deletedWorkflow) {
-            res.status(200).json({ message: 'Workflow deleted successfully' });
-        } else {
-            res.status(404).json({ error: 'Workflow not found' });
-        }
-    } catch (error) {
-        console.error('Error deleting workflow:', error);
-        res.status(500).json({ error: 'Failed to delete workflow' });
-    }
-};
-
 // Function to handle executing a workflow by ID
 // Update the function to use the correct parameter (name)
 const executeWorkflow = async (req, res) => {
@@ -131,7 +92,5 @@ export {
     getWorkflows,
     getWorkflowById,
     getWorkflowByName,
-    updateWorkflow,
-    deleteWorkflow,
     executeWorkflow,
 };

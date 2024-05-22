@@ -47,7 +47,7 @@ const WorkflowCanvas = ({ onElementsChange }) => {
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
     const [orderOfExecution, setOrderOfExecution] = useState([]); // Track order of execution
 
-    // Handle connecting nodes
+    // Handle connecting nodes (ooption to connect node and prepare array )
     const handleConnect = useCallback(
         (params) => {
             setEdges((prevEdges) => addEdge(params, prevEdges));

@@ -9,6 +9,7 @@ const FilterDataNode = ({ data, isConnectable }) => {
   // Handler for updating the column name
   const handleColumnChange = (event) => {
       const newColumn = event.target.value;
+      console.log("new edits" + newColumn);
       setColumn(newColumn);
       data.column = newColumn; // Update the data object with the new column name
   };
