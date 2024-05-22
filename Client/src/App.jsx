@@ -9,7 +9,7 @@ const App = () => {
     <Router>
       <div className="app">
         <Routes>
-          <Route path="/builder" element={<WorkflowBuilderPage />} />
+          <Route path="/built" element={<WorkflowBuilderPage />} />
           <Route path="/executor" element={<WorkflowExecutorPage />} />
           <Route path="/" element={<WorkflowBuilderPage />} />
         </Routes>
