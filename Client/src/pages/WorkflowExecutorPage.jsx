@@ -11,10 +11,11 @@ const WorkflowExecutorPage = () => {
   const navigate = useNavigate();
   const [uploadedData, setUploadedData] = useState(null);
   const workflows = useSelector((state) => state.workflow.workflows);
+  
   const selectedWorkflowName = useSelector(
     (state) => state.workflow.selectedWorkflowName
   );
-  const [executionMessage, setExecutionMessage] = useState(""); // Changed line
+  
   // Fetch the list of workflows when the component mounts
   useEffect(() => {
     dispatch(fetchWorkflows());
@@ -70,10 +71,6 @@ const WorkflowExecutorPage = () => {
       <h3 className="heading">Selected WorkFlow Name { selectedWorkflowName || " : no workflow selelcted"}</h3>
       <h4></h4>
 
-      {executionMessage && (
-        <div className="execution-message">{executionMessage}</div>
-      )}{" "}
-      {/* Changed line */}
       <div className="upload-container">
         <DataUploader onDataUpload={handleDataUpload} />
         <button className="choose-file-button">Choose File</button>
