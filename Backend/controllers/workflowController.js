@@ -79,9 +79,13 @@ const executeWorkflow = async (req, res) => {
         const executionResults = await workflowService.executeWorkflowService(workflowName, inputData);
 
         res.status(200).json(executionResults);
+
+        
+
     } catch (error) {
         console.error('Error executing workflow:', error);
-        res.status(500).json({ error: 'Failed to execute workflow' });
+        res.status(500).json({ error: 'Failed to execute workflow ' + error});
+        
     }
 };
 

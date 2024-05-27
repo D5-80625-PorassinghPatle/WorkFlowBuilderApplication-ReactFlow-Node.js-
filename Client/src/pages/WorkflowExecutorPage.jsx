@@ -11,11 +11,12 @@ const WorkflowExecutorPage = () => {
   const navigate = useNavigate();
   const [uploadedData, setUploadedData] = useState(null);
   const workflows = useSelector((state) => state.workflow.workflows);
-  
   const selectedWorkflowName = useSelector(
     (state) => state.workflow.selectedWorkflowName
   );
-  
+  const [error, setError] = useState(null);
+  const [status, setStatus] = useState(null);
+
   // Fetch the list of workflows when the component mounts
   useEffect(() => {
     dispatch(fetchWorkflows());
@@ -42,7 +43,7 @@ const WorkflowExecutorPage = () => {
     console.log("Uploaded Data:", uploadedData);
 
     if (!selectedWorkflowName || !uploadedData) {
-      console.error("Please select a workflow and upload data.");
+      setError("Please select a workflow and upload data.");
       return;
     }
 
@@ -58,9 +59,18 @@ const WorkflowExecutorPage = () => {
         executionData
       );
 
+      const status = setStatus("WorkFlow Executed successfully");
+
       // Handle the response
       console.log("Workflow executed successfully:", response.data);
+
     } catch (error) {
+      // Display backend error message to the user
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError("An unexpected error occurred. Please try again later.");
+      }
       console.error("Error executing workflow:", error);
     }
   };
@@ -68,13 +78,17 @@ const WorkflowExecutorPage = () => {
   return (
     <div className="workflow-executor-page">
       <h1 className="heading">WORKFLOW EXECUTOR</h1>
-      <h3 className="heading">Selected WorkFlow Name { selectedWorkflowName || " : no workflow selelcted"}</h3>
-      <h4></h4>
+      <h3 className="heading">
+        Selected WorkFlow Name {selectedWorkflowName || " : no workflow selected"}
+      </h3>
+      <h4>{status}</h4>
+      
+
+      {error && <div className="error-message">{error}</div>}
 
       <div className="upload-container">
         <DataUploader onDataUpload={handleDataUpload} />
-        <button className="choose-file-button">Choose File</button>
-        <button className="upload-button">Upload</button>
+       
       </div>
       <div className="dropdown-container">
         <WorkflowSelector
@@ -96,6 +110,10 @@ const WorkflowExecutorPage = () => {
     </div>
   );
 };
+
+// export default WorkflowExecutorPage;
+
+// export default WorkflowExecutorPage;
 
 // export default WorkflowExecutorPage;
 

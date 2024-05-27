@@ -43,25 +43,38 @@ const wait = async (duration = 6000) => {
 
 // Function to convert format (Convert Format node)
 const convertFormat = (inputData) => {
-  // Parse the CSV data (inputData) to JSON format
-  const data = inputData.data;
-  const rows = data.split("\r\n");
-  const headers = rows[0].split(",");
-  const result = rows.slice(1).map((row) => {
-    const values = row.split(",");
-    const jsonRow = {};
-    headers.forEach((header, index) => {
-      jsonRow[header] = values[index];
-    });
-    return jsonRow;
-  });
-
-  console.log("convertFormat done");
-
-  // Convert the array of objects to JSON format
-  const jsonData = JSON.stringify(result);
-  return jsonData;
-};
+    try {
+      // Ensure inputData is provided and is not empty
+      if (!inputData || !inputData.data) {
+        throw new Error("CSV data is required");
+      }
+  
+      // Parse the CSV data (inputData) to JSON format
+      const data = inputData.data;
+      const rows = data.split("\r\n");
+      const headers = rows[0].split(",");
+      const result = rows.slice(1).map((row) => {
+        const values = row.split(",");
+        const jsonRow = {};
+        headers.forEach((header, index) => {
+          jsonRow[header] = values[index];
+        });
+        return jsonRow;
+      });
+  
+      console.log("convertFormat done");
+  
+      // Convert the array of objects to JSON format
+      const jsonData = JSON.stringify(result);
+      return jsonData;
+    } catch (error) {
+      // Log the error
+      console.error("Error converting CSV to JSON:", error.message);
+      // Throw the error to be handled by the calling function
+      throw error;
+    }
+  };
+  
 
 const sendPostRequest = async (data) => {
   try {
@@ -82,7 +95,7 @@ const sendPostRequest = async (data) => {
 
     // If the response is JSON, parse and return it
   } catch (error) {
-    throw new Error("Data must be in JSON format");
+    throw new Error(" Sendpost req node : Data must be in JSON format");
   }
 };
 
@@ -174,7 +187,7 @@ const executeWorkflowService = async (name, inputData) => {
     }
   }
 
-  return executionResults;
+  return executionResults ;
 };
 
 export default {
