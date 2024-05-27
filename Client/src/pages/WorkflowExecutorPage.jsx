@@ -1,100 +1,106 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchWorkflows, selectWorkflow } from '../redux/slices/workflowSlice';
-import DataUploader from '../components/WorkflowExecutor/DataUploader';
-import WorkflowSelector from '../components/WorkflowExecutor/WorkflowSelector';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchWorkflows, selectWorkflow } from "../redux/slices/workflowSlice";
+import DataUploader from "../components/WorkflowExecutor/DataUploader";
+import WorkflowSelector from "../components/WorkflowExecutor/WorkflowSelector";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const WorkflowExecutorPage = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [uploadedData, setUploadedData] = useState(null);
-    const workflows = useSelector((state) => state.workflow.workflows);
-    const selectedWorkflowName = useSelector((state) => state.workflow.selectedWorkflowName);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [uploadedData, setUploadedData] = useState(null);
+  const workflows = useSelector((state) => state.workflow.workflows);
+  const selectedWorkflowName = useSelector(
+    (state) => state.workflow.selectedWorkflowName
+  );
+  const [executionMessage, setExecutionMessage] = useState(""); // Changed line
+  // Fetch the list of workflows when the component mounts
+  useEffect(() => {
+    dispatch(fetchWorkflows());
+  }, [dispatch]);
 
-    // Fetch the list of workflows when the component mounts
-    useEffect(() => {
-        dispatch(fetchWorkflows());
-    }, [dispatch]);
-
-    const handleDataUpload = (data) => {
-        setUploadedData(data);
-    };
-
-    const handleWorkflowSelect = (selectedWorkflow) => {
-      // Extract the name from the selected workflow
-      const workflowName = selectedWorkflow.name;
-  
-      // Dispatch the workflow name to the Redux store
-      dispatch(selectWorkflow(workflowName));
-  };
-  
-  
-  
-
-    const handleGoToWorkflowPage = () => {
-        navigate('/builder');
-    };
-
-    const handleExecuteWorkflow = async () => {
-      console.log('Selected Workflow Name:', selectedWorkflowName);
-      console.log('Uploaded Data:', uploadedData);
-  
-      if (!selectedWorkflowName || !uploadedData) {
-          console.error('Please select a workflow and upload data.');
-          return;
-      }
-  
-      try {
-          // Prepare execution data
-          const executionData = {
-              data: uploadedData,
-          };
-  
-          // Send a POST request to execute the workflow using the workflow name
-          const response = await axios.post(`http://localhost:3000/api/workflows/${selectedWorkflowName}/execute`, executionData);
-  
-          // Handle the response
-          console.log('Workflow executed successfully:', response.data);
-      } catch (error) {
-          console.error('Error executing workflow:', error);
-      }
+  const handleDataUpload = (data) => {
+    setUploadedData(data);
   };
 
-  
-  
+  const handleWorkflowSelect = (selectedWorkflow) => {
+    // Extract the name from the selected workflow
+    const workflowName = selectedWorkflow.name;
 
-    return (
-        <div className="workflow-executor-page">
-            <h1 className="heading">WORKFLOW EXECUTOR</h1>
+    // Dispatch the workflow name to the Redux store
+    dispatch(selectWorkflow(workflowName));
+  };
 
-            <div className="upload-container">
-                <DataUploader onDataUpload={handleDataUpload} />
-                <button className="choose-file-button">Choose File</button>
-                <button className="upload-button">Upload</button>
-            </div>
+  const handleGoToWorkflowPage = () => {
+    navigate("/builder");
+  };
 
-            <div className="dropdown-container">
-                <WorkflowSelector
-                    workflows={workflows}
-                    onWorkflowSelect={handleWorkflowSelect}
-                />
-            </div>
+  const handleExecuteWorkflow = async () => {
+    console.log("Selected Workflow Name:", selectedWorkflowName);
+    console.log("Uploaded Data:", uploadedData);
 
-            <button onClick={handleExecuteWorkflow} className="execute-workflow-button">
-                Execute Workflow
-            </button>
+    if (!selectedWorkflowName || !uploadedData) {
+      console.error("Please select a workflow and upload data.");
+      return;
+    }
 
-            <button onClick={handleGoToWorkflowPage} className="go-to-workflow-button" style={{ marginTop: '10px' }}>
-                Go to Workflow Page
-            </button>
-        </div>
-    );
+    try {
+      // Prepare execution data
+      const executionData = {
+        data: uploadedData,
+      };
+
+      // Send a POST request to execute the workflow using the workflow name
+      const response = await axios.post(
+        `http://localhost:3000/api/workflows/${selectedWorkflowName}/execute`,
+        executionData
+      );
+
+      // Handle the response
+      console.log("Workflow executed successfully:", response.data);
+    } catch (error) {
+      console.error("Error executing workflow:", error);
+    }
+  };
+
+  return (
+    <div className="workflow-executor-page">
+      <h1 className="heading">WORKFLOW EXECUTOR</h1>
+      <h3 className="heading">Selected WorkFlow Name { selectedWorkflowName || " : no workflow selelcted"}</h3>
+      <h4></h4>
+
+      {executionMessage && (
+        <div className="execution-message">{executionMessage}</div>
+      )}{" "}
+      {/* Changed line */}
+      <div className="upload-container">
+        <DataUploader onDataUpload={handleDataUpload} />
+        <button className="choose-file-button">Choose File</button>
+        <button className="upload-button">Upload</button>
+      </div>
+      <div className="dropdown-container">
+        <WorkflowSelector
+          workflows={workflows}
+          onWorkflowSelect={handleWorkflowSelect}
+        />
+      </div>
+      <button
+        onClick={handleExecuteWorkflow}
+        className="execute-workflow-button">
+        Execute Workflow
+      </button>
+      <button
+        onClick={handleGoToWorkflowPage}
+        className="go-to-workflow-button"
+        style={{ marginTop: "10px" }}>
+        Go to Workflow Page
+      </button>
+    </div>
+  );
 };
 
 // export default WorkflowExecutorPage;
-
 
 // Define CSS for the component
 const styles = `
@@ -179,7 +185,7 @@ const styles = `
 `;
 
 // Append styles to the document head
-const styleElement = document.createElement('style');
+const styleElement = document.createElement("style");
 styleElement.textContent = styles;
 document.head.appendChild(styleElement);
 
