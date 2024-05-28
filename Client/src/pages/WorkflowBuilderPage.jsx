@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-
 import WorkflowCanvas from "../components/WorkflowBuilder/WorkflowCanvas";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
 
 const WorkflowBuilderPage = () => {
- // const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navigate = useNavigate(); // Initialize useNavigate
   const [elements, setElements] = useState([]);
   const [orderOfExecution, setOrderOfExecution] = useState([]); // State to track order of execution
@@ -16,27 +15,42 @@ const WorkflowBuilderPage = () => {
 
     // Update the order of execution based on the elements in sequence
     const order = newElements
-        // Filter out initial nodes (e.g., "Start Node" and "End Node")
-        .filter((element) => element.type !== 'input' && element.type !== 'output')
-        // Map to the types of the nodes
-        .map((element) => element.type);
+      // Filter out initial nodes (e.g., "Start Node" and "End Node")
+      .filter(
+        (element) => element.type !== "input" && element.type !== "output"
+      )
+      // Map to the types of the nodes
+      .map((element) => element.type);
 
     setOrderOfExecution(order);
-};
-
+  };
 
   const handleSaveWorkflow = async () => {
     try {
       // Define the workflow data to be saved
-      const workflowData = {
+      let workflowData = {
         name: workflowName,
         orderOfExecution,
-         // Use order of execution state variable
+        columnName: '' // Default value
       };
-
+  
+      // Find the FilterDataNode element
+      const filterDataNode = elements.find(element => element.type === "filterData");
+  
+      // If FilterDataNode exists and it has a data object and a column specified, include it in workflowData
+      if (filterDataNode && filterDataNode.data && filterDataNode.data.column) {
+        workflowData = {
+          ...workflowData,
+          columnName: filterDataNode.data.column
+        };
+      }
+  
       // Send a POST request to save the workflow data to the backend
-      const response = await axios.post("http://localhost:3000/api/workflows", workflowData);
-
+      const response = await axios.post(
+        "http://localhost:3000/api/workflows",
+        workflowData
+      );
+  
       // Handle the response
       console.log("Workflow saved:", response.data);
     } catch (error) {
@@ -77,25 +91,40 @@ const WorkflowBuilderPage = () => {
         <div className="sidebar">
           <div
             className="node-option"
-            onDragStart={(event) => event.dataTransfer.setData("application/reactflow", "filterData")}
+            onDragStart={(event) =>
+              event.dataTransfer.setData("application/reactflow", "filterData")
+              
+            }
             draggable>
             Filter Data Node
           </div>
           <div
             className="node-option"
-            onDragStart={(event) => event.dataTransfer.setData("application/reactflow", "convertFormat")}
+            onDragStart={(event) =>
+              event.dataTransfer.setData(
+                "application/reactflow",
+                "convertFormat"
+              )
+            }
             draggable>
             Convert Format Node
           </div>
           <div
             className="node-option"
-            onDragStart={(event) => event.dataTransfer.setData("application/reactflow", "wait")}
+            onDragStart={(event) =>
+              event.dataTransfer.setData("application/reactflow", "wait")
+            }
             draggable>
             Wait Node
           </div>
           <div
             className="node-option"
-            onDragStart={(event) => event.dataTransfer.setData("application/reactflow", "sendPostRequest")}
+            onDragStart={(event) =>
+              event.dataTransfer.setData(
+                "application/reactflow",
+                "sendPostRequest"
+              )
+            }
             draggable>
             Send Post Request Node
           </div>

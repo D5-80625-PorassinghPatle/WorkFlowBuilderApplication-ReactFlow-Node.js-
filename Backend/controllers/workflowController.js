@@ -3,10 +3,12 @@ import workflowService from '../services/workflowService.js'; // Import workflow
 // Function to handle creating a new workflow
 const createWorkflow = async (req, res) => {
     try {
-        const { name, orderOfExecution } = req.body;
+        const { name, orderOfExecution,columnName } = req.body;
+
+        const columnToSave = columnName || 'defaultColumnValue';
 
         // Call the service function to create a new workflow
-        const newWorkflow = await workflowService.createWorkflowService(name, orderOfExecution);
+        const newWorkflow = await workflowService.createWorkflowService(name, orderOfExecution,columnToSave);
 
         // Send a response with the created workflow
         res.status(201).json(newWorkflow);

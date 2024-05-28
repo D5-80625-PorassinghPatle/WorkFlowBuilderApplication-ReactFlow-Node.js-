@@ -23,10 +23,11 @@ const workflowSchema = new mongoose.Schema({
         type: Date,
         default: Date.now, // Automatically set to current date and time
     },
-    columnname: {
+    columnName: {
         type: String,
         required: false,
         trim: false,
+        
     },
     
     
